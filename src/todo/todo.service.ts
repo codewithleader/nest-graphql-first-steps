@@ -1,6 +1,6 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { Todo } from './entity/todo.entity';
-import type { CreateTodoInput } from './dto/inputs/create-todo.input';
+import type { CreateTodoInput, UpdateTodoInput } from './dto/inputs';
 
 @Injectable()
 export class TodoService {
@@ -28,5 +28,18 @@ export class TodoService {
     todo.description = createTodoInput.description;
     this.todos.push(todo);
     return todo;
+  }
+
+  update(updateTodoInput: UpdateTodoInput): Todo {
+    const { id, description, done } = updateTodoInput;
+    const todoToUpdate = this.findOne(id); // El metodo findOne de esta clase lanza la exception si no existe.
+    if (description) todoToUpdate.description = description;
+    if (done !== undefined) todoToUpdate.done = done;
+    // Actualizamos el array de to-dos
+    this.todos = this.todos.map((todo) => {
+      return todo.id === id ? todoToUpdate : todo;
+    });
+    // Retornamos el to-do actualizado
+    return todoToUpdate;
   }
 }
