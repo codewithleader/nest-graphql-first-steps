@@ -19,15 +19,14 @@ export class TodoResolver {
 
   @Mutation(() => Todo, { name: 'createTodo' })
   create(@Args('createTodoInput') createTodoInput: CreateTodoInput) {
-    console.log({ createTodoInput });
+    return this.todoService.create(createTodoInput);
+  }
+
+  update() {
     return {};
   }
 
-  update(id: number, input: any) {
-    return {};
-  }
-
-  remove(id: number) {
+  remove() {
     return {};
   }
 }
