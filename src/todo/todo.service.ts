@@ -30,8 +30,8 @@ export class TodoService {
     return todo;
   }
 
-  update(updateTodoInput: UpdateTodoInput): Todo {
-    const { id, description, done } = updateTodoInput;
+  update(id: number, updateTodoInput: UpdateTodoInput): Todo {
+    const { description, done } = updateTodoInput;
     const todoToUpdate = this.findOne(id); // El metodo findOne de esta clase lanza la exception si no existe.
     if (description) todoToUpdate.description = description;
     if (done !== undefined) todoToUpdate.done = done;
@@ -41,5 +41,14 @@ export class TodoService {
     });
     // Retornamos el to-do actualizado
     return todoToUpdate;
+  }
+
+  delete(id: number): Boolean {
+    // Verificar que exista el to-do
+    this.findOne(id);
+    // Eliminar el to-do
+    this.todos = this.todos.filter((todo) => todo.id !== id);
+    // Retornar true
+    return true;
   }
 }
