@@ -9,9 +9,7 @@ export class TodoResolver {
   constructor(private readonly todoService: TodoService) {}
 
   @Query(() => [Todo], { name: 'todos' })
-  findAll(
-    @Args() findAllArgs: FindAllArgs
-  ): Todo[] {
+  findAll(@Args() findAllArgs: FindAllArgs): Todo[] {
     return this.todoService.findAll(findAllArgs);
   }
 
@@ -33,5 +31,21 @@ export class TodoResolver {
   @Mutation(() => Boolean, { name: 'removeTodo' })
   remove(@Args('id', { type: () => Int }) id: number) {
     return this.todoService.delete(id);
+  }
+
+  // Aggregations
+  @Query(() => Int, { name: 'totalTodos' })
+  totalTodos() {
+    return this.todoService.totalTodos;
+  }
+
+  @Query(() => Int, { name: 'completedTodos' })
+  completedTodos() {
+    return this.todoService.completedTodos;
+  }
+
+  @Query(() => Int, { name: 'pendingTodos' })
+  pendingTodos() {
+    return this.todoService.pendingTodos;
   }
 }
